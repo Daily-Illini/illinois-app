@@ -1,5 +1,5 @@
 # Illinois App
-The official mobile app of the University of Illinois. Powered by the [Rokwire Platform](https://rokwire.org/).
+The official mobile app of the University of Illinoise. Powered by the [Rokwire Platform](https://rokwire.org/).
 
 ## Requirements
 
