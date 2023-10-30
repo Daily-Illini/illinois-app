@@ -166,6 +166,11 @@ class _HomeDailyIlliniWidgetState extends State<HomeDailyIlliniWidget> implement
 
         contentWidget = Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: widgetsList.first);
       }
+      _onViewAll() async {
+        final Uri url = Uri.parse('https://dailyillini.com');
+        LaunchMode launchMode = Platform.isAndroid ? LaunchMode.externalApplication : LaunchMode.platformDefault;
+        launchUrl(url, mode: launchMode);
+      }
 
       //This column moves view all button to the top right
       return Column(
@@ -176,7 +181,7 @@ class _HomeDailyIlliniWidgetState extends State<HomeDailyIlliniWidget> implement
                 title: Localization().getStringEx('widget.home.daily_illini.button.all.title', 'View All'),
                 textStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, decoration: TextDecoration.underline),
                 hint: Localization().getStringEx('widget.home.daily_illini.button.all.hint', 'Tap to launch dailyillini.com website'),
-                onTap: () => launchUrlString("dailyillini.com")),
+                onTap: _onViewAll),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -193,6 +198,8 @@ class _HomeDailyIlliniWidgetState extends State<HomeDailyIlliniWidget> implement
       ]);
     }
   }
+
+
 
   void _loadFeedItems() {
     _setLoading(true);
@@ -314,7 +321,7 @@ class _MainStoryWidget extends StatelessWidget {
     child: Align(
       alignment: FractionalOffset.bottomCenter,
       child: InkWell(
-        onTap: () => launchUrlString(StringUtils.ensureNotEmpty(illiniItem?.link)),
+        onTap: _onTap,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -339,18 +346,28 @@ class _MainStoryWidget extends StatelessWidget {
   }
   Widget _buildImage() {
     return StringUtils.isNotEmpty(illiniItem?.thumbImageUrl)
-        ? Image.network(illiniItem!.thumbImageUrl!, excludeFromSemantics: true, loadingBuilder: (context, child, loadingProgress) {
+        ?ModalImageHolder(child: Image.network(illiniItem!.thumbImageUrl!, excludeFromSemantics: true, loadingBuilder: (context, child, loadingProgress) {
       if (loadingProgress == null) {
         return child;
       }
       return Padding(padding: EdgeInsets.symmetric(vertical: 30), child: CircularProgressIndicator());
     }, errorBuilder: (context, error, stackTrace) {
       return _defaultPlaceholderImage();
-    })
+    }))
         : _defaultPlaceholderImage();
   }
   Widget _defaultPlaceholderImage() {
     return Row(children: [Expanded(child: Styles().images?.getImage('news-placeholder', fit: BoxFit.fill) ?? Container())]);
+  }
+  void _onTap() {
+    String? url = illiniItem!.link;
+    if (StringUtils.isNotEmpty(url)) {
+      Uri? uri = Uri.tryParse(url!);
+      if (uri != null) {
+        LaunchMode launchMode = Platform.isAndroid ? LaunchMode.externalApplication : LaunchMode.platformDefault;
+        launchUrl(uri, mode: launchMode);
+      }
+    }
   }
 }
 class _MinorStory extends StatelessWidget {
@@ -366,7 +383,7 @@ class _MinorStory extends StatelessWidget {
         child: Align(
           alignment: FractionalOffset.bottomCenter,
           child: InkWell(
-            onTap: () => launchUrlString(StringUtils.ensureNotEmpty(illiniItem?.link)),
+            onTap: _onTap,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -385,6 +402,16 @@ class _MinorStory extends StatelessWidget {
             ),
           ),
         ));
+  }
+  void _onTap() {
+    String? url = illiniItem!.link;
+    if (StringUtils.isNotEmpty(url)) {
+      Uri? uri = Uri.tryParse(url!);
+      if (uri != null) {
+        LaunchMode launchMode = Platform.isAndroid ? LaunchMode.externalApplication : LaunchMode.platformDefault;
+        launchUrl(uri, mode: launchMode);
+      }
+    }
   }
 }
 

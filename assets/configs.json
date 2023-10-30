@@ -1,0 +1,14 @@
+{
+    "production": {
+        "config_url": "https://api.rokwire.illinois.edu/app/configs",
+        "api_key": "ffffffff-ffff-ffff-fffffffffffffffff"
+    },
+    "dev": {
+        "config_url": "https://api-dev.rokwire.illinois.edu/app/configs",
+        "api_key": "ffffffff-ffff-ffff-fffffffffffffffff"
+    },
+    "test": {
+        "config_url": "https://api-test.rokwire.illinois.edu/app/configs",
+        "api_key": "ffffffff-ffff-ffff-fffffffffffffffff"
+    }
+}
